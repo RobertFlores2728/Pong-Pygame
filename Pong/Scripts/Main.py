@@ -16,8 +16,8 @@ def main():
     paddleSpeed = 20
 
     ballRect = pygame.Rect(int(screen.get_width() / 2), int(screen.get_height() / 2), 20, 20)
-    ballDirectionX = 1  # should be 1 or -1 only. ball either goes left or right
-    ballDirectionY = 1  # can be a number with greater fidelity. dictates curve of ball
+    ballTravelX = 2.5  # should be 1 or -1 only. ball either goes left or right
+    ballTravelY = 1  # 1 = greatest curve, 0 = straight
     ballSpeed = 10  # speed will increase with each hit
 
     while True:
@@ -45,17 +45,6 @@ def main():
             paddleRect.y = screen.get_height() - paddleRect.height
 
 
-        # ball boundaries check, bounce around walls
-        if ballRect.x > screen.get_width() - ballRect.width:
-            ballDirectionX = -ballDirectionX
-        if ballRect.x < 0:
-            ballDirectionX = -ballDirectionX
-        if ballRect.y > screen.get_height() - ballRect.height:
-            ballDirectionY = -ballDirectionY
-        if ballRect.y < 0:
-            ballDirectionY = -ballDirectionY
-
-
 
 
         # Update screen
@@ -67,18 +56,32 @@ def main():
 
 
         # move ball
-        ballRect.x += ballDirectionX * ballSpeed
-        ballRect.y += ballDirectionY * ballSpeed
+        ballRect.x += int(ballTravelX * ballSpeed)
+        ballRect.y += int(ballTravelY * ballSpeed)
 
         # draw ball
         pygame.draw.rect(screen, white, ballRect)
 
-        # check collision
-        if paddleRect.colliderect(ballRect):
-            ballDirectionX = -ballDirectionX
+        # check paddle ball collision
+        if paddleRect.colliderect(ballRect) and ballTravelX < 0:
+            # get new y direction of ball
+            ballTravelX = -ballTravelX
+            ballTravelY = (ballRect.centery - paddleRect.centery)/100 # new y travel
+            ballTravelX += 0.1 # new x travel
+            if ballTravelX > 2.5:
+                ballTravelX = 2.5
             print("Collision!")
+        print(ballTravelX)
 
-
+        # ball boundaries check, bounce around walls
+        if ballRect.x > screen.get_width() - ballRect.width:
+            ballTravelX = -ballTravelX
+        if ballRect.x < 0:
+            ballTravelX = -ballTravelX
+        if ballRect.y > screen.get_height() - ballRect.height:
+            ballTravelY = -ballTravelY
+        if ballRect.y < 0:
+            ballTravelY = -ballTravelY
 
     return
 
