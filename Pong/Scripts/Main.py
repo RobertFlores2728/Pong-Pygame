@@ -1,12 +1,18 @@
 import sys, pygame
 
+from Scripts.Ball import Ball
+
 pygame.init()
+
 
 
 
 def main():
     screen = pygame.display.set_mode((1500, 1000))  # screen is a Surface object
     clock = pygame.time.Clock()
+
+    # create ball object
+    ball1 = Ball(screen)
 
     blue = (100, 100, 255)
     black = (0, 0, 0)
@@ -16,7 +22,7 @@ def main():
     paddleSpeed = 20
 
     ballRect = pygame.Rect(int(screen.get_width() / 2), int(screen.get_height() / 2), 20, 20)
-    ballTravelX = 2.5  # should be 1 or -1 only. ball either goes left or right
+    ballTravelX = 1  # should be 1 or -1 only. ball either goes left or right
     ballTravelY = 1  # 1 = greatest curve, 0 = straight
     ballSpeed = 10  # speed will increase with each hit
 
@@ -55,12 +61,6 @@ def main():
         pygame.draw.rect(screen, black, paddleRect)
 
 
-        # move ball
-        ballRect.x += int(ballTravelX * ballSpeed)
-        ballRect.y += int(ballTravelY * ballSpeed)
-
-        # draw ball
-        pygame.draw.rect(screen, white, ballRect)
 
         # check paddle ball collision
         if paddleRect.colliderect(ballRect) and ballTravelX < 0:
@@ -71,7 +71,6 @@ def main():
             if ballTravelX > 2.5:
                 ballTravelX = 2.5
             print("Collision!")
-        print(ballTravelX)
 
         # ball boundaries check, bounce around walls
         if ballRect.x > screen.get_width() - ballRect.width:
@@ -82,6 +81,20 @@ def main():
             ballTravelY = -ballTravelY
         if ballRect.y < 0:
             ballTravelY = -ballTravelY
+
+        # move ball
+        ballRect.x += int(ballTravelX * ballSpeed)
+        ballRect.y += int(ballTravelY * ballSpeed)
+
+        # draw ball
+        pygame.draw.rect(screen, white, ballRect)
+
+
+        # move ball object
+        ball1.move()
+
+        # draw ball object
+        ball1.draw()
 
     return
 
