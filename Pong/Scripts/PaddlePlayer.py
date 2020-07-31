@@ -7,7 +7,7 @@ class PaddlePlayer:
         self.paddleRect = pygame.Rect(0, 0, 50, 200)
         self.paddleSpeed = 20
 
-    def Input(self):
+    def input(self):
         keys = pygame.key.get_pressed()
 
         # Move paddle
@@ -21,3 +21,11 @@ class PaddlePlayer:
             self.paddleRect.y = 0
         elif self.paddleRect.y > self.screen.get_height() - self.paddleRect.height:
             self.paddleRect.y = self.screen.get_height() - self.paddleRect.height
+
+    def draw(self):
+        # draw paddle
+        pygame.draw.rect(self.screen, (0,0,0), self.paddleRect)
+
+    def update(self):
+        self.input()
+        self.draw()
