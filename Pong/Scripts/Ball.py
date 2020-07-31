@@ -3,9 +3,11 @@ import sys, pygame
 class Ball:
 
 
-    def __init__(self, screen):
+    def __init__(self, screen, gameObjects):
         self.color = (255, 200, 200)
         self.screen = screen
+
+        self.gameObjects = gameObjects
 
         self.ballRect = pygame.Rect(int(screen.get_width() / 2), int(screen.get_height() / 2), 20, 20)
         self.ballTravelX = 1  # should be 1 or -1 only. ball either goes left or right

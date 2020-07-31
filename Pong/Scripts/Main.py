@@ -1,6 +1,8 @@
 import sys, pygame
 
-from Scripts.Ball import Ball
+from Scripts.Ball import *
+from Scripts.GameObjects import *
+
 
 pygame.init()
 
@@ -11,8 +13,11 @@ def main():
     screen = pygame.display.set_mode((1500, 1000))  # screen is a Surface object
     clock = pygame.time.Clock()
 
+    gameObjects = GameObjects()
+
     # create ball object
-    ball1 = Ball(screen)
+    ball1 = Ball(screen, gameObjects)
+    gameObjects.set_ball(ball1)
 
     blue = (100, 100, 255)
     black = (0, 0, 0)
