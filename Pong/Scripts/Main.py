@@ -2,6 +2,7 @@ import sys, pygame
 
 from Scripts.Ball import *
 from Scripts.PaddlePlayer import *
+from Scripts.PaddleAI import *
 from Scripts.GameObjects import *
 
 
@@ -19,6 +20,11 @@ def main():
     # create player paddle
     paddlePlayer = PaddlePlayer(screen)
     gameObjects.set_player_paddle(paddlePlayer)
+
+
+    # create ai paddle
+    paddleAI = PaddleAI(screen, gameObjects)
+    gameObjects.set_ai_paddle(paddleAI)
 
 
     # create ball object
@@ -49,6 +55,9 @@ def main():
 
         # update player paddle object
         paddlePlayer.update()
+
+        # update ai paddle object
+        paddleAI.update()
 
         # update ball object
         ball.update()

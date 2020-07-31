@@ -5,20 +5,19 @@ class PaddleAI:
     def __init__(self, screen, gameObjects):
         self.screen = screen
         self.gameObjects = gameObjects
-        self.paddleRect = pygame.Rect(0, 0, 50, 200)
-        self.paddleSpeed = 20
+        self.paddleRect = pygame.Rect(self.screen.get_width() - 50, 0, 50, 200)
+        self.paddleSpeed = 7
 
     def move(self):
+        if(self.gameObjects.ball is None):
+            return
 
         # Move paddle
-        print(self.gameObjects.ball.ballRect.centery)
-        print(self.paddleRect.centery)
-
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_w]:
-            self.paddleRect.y -= self.paddleSpeed
-        if keys[pygame.K_s]:
+        if self.paddleRect.centery < self.gameObjects.ball.ballRect.centery:
             self.paddleRect.y += self.paddleSpeed
+        elif self.paddleRect.centery > self.gameObjects.ball.ballRect.centery:
+            self.paddleRect.y -= self.paddleSpeed
+
 
         # paddle boundaries check
         if self.paddleRect.y < 0:
@@ -31,5 +30,5 @@ class PaddleAI:
         pygame.draw.rect(self.screen, (0,0,0), self.paddleRect)
 
     def update(self):
-        self.input()
+        self.move()
         self.draw()
