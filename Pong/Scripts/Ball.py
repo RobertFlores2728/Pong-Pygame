@@ -1,18 +1,18 @@
-import sys, pygame
+import sys, pygame, random
 
 class Ball:
 
 
     def __init__(self, screen, gameObjects):
-        self.color = (255, 200, 200)
+        self.color = (random.randint(200,255), random.randint(200,255), 150)
         self.screen = screen
 
         self.gameObjects = gameObjects
 
-        self.ballRect = pygame.Rect(int(screen.get_width() / 2), int(screen.get_height() / 2), 20, 20)
-        self.ballTravelX = 1  # should be 1 or -1 only. ball either goes left or right
-        self.ballTravelY = -1  # 1 = greatest curve, 0 = straight
-        self.ballSpeed = 10  # speed will increase with each hit
+        self.ballRect = pygame.Rect(int(screen.get_width() / 2), random.randint(20, screen.get_height() - 20), 20, 20)
+        self.ballTravelX = 1  # amount the ball travels on the x axis. increases with each hit
+        self.ballTravelY = random.randint(-100, 100) / 100  # 1 = greatest curve, 0 = straight
+        self.ballSpeed = 10
 
     def draw(self):
         # draw ball
