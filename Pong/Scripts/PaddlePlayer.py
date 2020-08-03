@@ -3,8 +3,9 @@ from Scripts.GameObject import *
 
 class PaddlePlayer(GameObject):
 
-    def __init__(self):
+    def __init__(self, gameManager):
         self.paddleRect = pygame.Rect(0, 0, 50, 200)
+        self.gameManager = gameManager
 
     def input(self):
         keys = pygame.key.get_pressed()

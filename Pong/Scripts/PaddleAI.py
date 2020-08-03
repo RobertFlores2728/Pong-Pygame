@@ -33,7 +33,6 @@ class PaddleAI(GameObject):
     def new_offset(self):
         if self.paddleRect.colliderect(self.gameManager.ball.ballRect):
             self.offset = random.randint(-110, 110)
-            print(self.offset)
 
 
     def update(self):

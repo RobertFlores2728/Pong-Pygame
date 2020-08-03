@@ -6,7 +6,6 @@ class Ball(GameObject):
 
     def __init__(self, gameManager):
         self.color = (random.randint(200,255), random.randint(200,255), 150)
-        self.screen = self.gameManager.screen
 
         self.gameManager = gameManager
 
@@ -21,11 +20,7 @@ class Ball(GameObject):
 
     def move(self):
         # ball boundaries check, bounce around walls
-        if self.ballRect.x > self.screen.get_width() - self.ballRect.width:
-            self.ballTravelX = -self.ballTravelX
-        if self.ballRect.x < 0:
-            self.ballTravelX = -self.ballTravelX
-        if self.ballRect.y > self.screen.get_height() - self.ballRect.height:
+        if self.ballRect.y > self.gameManager.screen.get_height() - self.ballRect.height:
             self.ballTravelY = -self.ballTravelY
         if self.ballRect.y < 0:
             self.ballTravelY = -self.ballTravelY
@@ -39,7 +34,7 @@ class Ball(GameObject):
             return
 
         # check paddle ball collision
-        if self.gameManager.paddlePlayer.paddleRect.colliderect(self.ballRect):# and self.ballTravelX < 0:
+        if self.gameManager.paddlePlayer.paddleRect.colliderect(self.ballRect) and self.ballTravelX < 0:
             # get new y direction of ball
             self.ballTravelX = -self.ballTravelX
             self.ballTravelY = (self.ballRect.centery - self.gameManager.paddlePlayer.paddleRect.centery) / 99  # new y travel
@@ -53,13 +48,19 @@ class Ball(GameObject):
             return
 
         # check paddle ball collision
-        if self.gameManager.paddleAI.paddleRect.colliderect(self.ballRect):# and self.ballTravelX > 0:
+        if self.gameManager.paddleAI.paddleRect.colliderect(self.ballRect) and self.ballTravelX > 0:
             # get new y direction of ball
             self.ballTravelX = -self.ballTravelX
             self.ballTravelY = (self.ballRect.centery - self.gameManager.paddleAI.paddleRect.centery) / 99  # new y travel
             self.ballTravelX -= 0.1  # new x travel
             if self.ballTravelX > 2.5:
                 self.ballTravelX = 2.5
+
+    def check_if_scored(self):
+        if self.ballRect.x > self.gameManager.screen.get_width():
+            print("player scored")
+        if self.ballRect.x < 0 - self.ballRect.width:
+            print("ai scored")
 
 
     def update(self):

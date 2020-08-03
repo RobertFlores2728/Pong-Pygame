@@ -6,12 +6,14 @@ from Scripts.PaddleAI import *
 
 class GameManager:
 
-    def __init__(self, screen):
+    def __init__(self):
+        self.paused = False
+
         self.ball = None
         self.paddlePlayer = None
         self.paddleAI = None
 
-        self.screen = screen
+        self.screen = None
         self.clock = None
 
         self.gameObjects = []
@@ -22,15 +24,15 @@ class GameManager:
 
     def spawn_game_objects(self):
         # create player paddle
-        self.paddlePlayer = PaddlePlayer(self.screen)
+        self.paddlePlayer = PaddlePlayer(self)
         self.gameObjects.append(self.paddlePlayer)
 
         # create ai paddle
-        self.paddleAI = PaddleAI(self.screen, self)
+        self.paddleAI = PaddleAI(self)
         self.gameObjects.append(self.paddleAI)
 
         # create ball object
-        self.ball = Ball(self.screen, self)
+        self.ball = Ball(self)
         self.gameObjects.append(self.ball)
 
     def update_game_objects(self):
@@ -38,10 +40,18 @@ class GameManager:
             gameObject.update()
 
     def check_input(self):
-        # Input
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_p]:
-            print("p was pressed!")
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_p:
+                    print("p was pressed!")
+                    self.paused = not (self.paused)
+                    print(self.paused)
+
+
+
 
     def update_screen(self):
         # Update screen
@@ -49,7 +59,19 @@ class GameManager:
         pygame.display.flip()
         self.screen.fill((100, 100, 255))
 
+    def start(self):
+        self.setup_pygame()
+        self.spawn_game_objects()
+
     def update(self):
+        if not(self.paused):
+            self.update_game_objects()
+        if self.paused:
+            self.draw_menu()
+        self.update_screen()
+
         self.check_input()
-        self.update_game_objects()
+
+    def draw_menu(self):
+        print("drawing menu...")
 
