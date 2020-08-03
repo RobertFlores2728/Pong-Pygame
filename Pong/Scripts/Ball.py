@@ -57,13 +57,31 @@ class Ball(GameObject):
                 self.ballTravelX = 2.5
 
     def check_if_scored(self):
+        if self.gameManager.intermission:
+            return
+
         if self.ballRect.x > self.gameManager.screen.get_width():
             print("player scored")
+            self.gameManager.playerScore += 1
+            # self.gameManager.intermission = True
+            self.reset_ball()
         if self.ballRect.x < 0 - self.ballRect.width:
             print("ai scored")
+            self.gameManager.AIScore += 1
+            # self.gameManager.intermission = True
+            self.reset_ball()
+
+
+    def reset_ball(self):
+        self.ballRect = pygame.Rect(int(self.gameManager.screen.get_width() / 2),
+                                    random.randint(20, self.gameManager.screen.get_height() - 20), 20, 20)
+        self.ballTravelX = 1  # amount the ball travels on the x axis. increases with each hit
+        self.ballTravelY = 0  # random.randint(-100, 100) / 100  # 1 = greatest curve, 0 = straight
+        self.gameManager.paddleAI.new_offset()
 
 
     def update(self):
+        self.check_if_scored()
         self.check_paddle_collision_player()
         self.check_paddle_collision_ai()
         self.move()

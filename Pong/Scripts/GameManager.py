@@ -7,7 +7,11 @@ from Scripts.PaddleAI import *
 class GameManager:
 
     def __init__(self):
+        self.playerScore = 0
+        self.AIScore = 0
+
         self.paused = False
+        self.intermission = False
 
         self.ball = None
         self.paddlePlayer = None
@@ -21,6 +25,7 @@ class GameManager:
     def setup_pygame(self):
         self.screen = pygame.display.set_mode((1500, 1000))  # screen is a Surface object
         self.clock = pygame.time.Clock()
+
 
     def spawn_game_objects(self):
         # create player paddle
@@ -59,6 +64,14 @@ class GameManager:
         pygame.display.flip()
         self.screen.fill((100, 100, 255))
 
+    def update_score_text(self):
+        font = pygame.font.SysFont('Comic Sans MS', 30)
+        score = str(self.playerScore) + " - " + str(self.AIScore)
+        textSurface = font.render(score, True, (255, 255, 255))
+
+        self.screen.blit(textSurface, textSurface.get_rect())
+
+
     def start(self):
         self.setup_pygame()
         self.spawn_game_objects()
@@ -69,6 +82,7 @@ class GameManager:
         if self.paused:
             self.draw_menu()
         self.update_screen()
+        self.update_score_text()
 
         self.check_input()
 

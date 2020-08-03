@@ -6,7 +6,7 @@ class PaddleAI(GameObject):
     def __init__(self, gameManager):
         self.gameManager = gameManager
         self.paddleRect = pygame.Rect(self.gameManager.screen.get_width() - 50, 0, 50, 200)
-        self.paddleSpeed = 7
+        self.paddleSpeed = 10
         self.offset = 0
 
     def move(self):
