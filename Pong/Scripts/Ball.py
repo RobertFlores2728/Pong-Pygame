@@ -1,22 +1,23 @@
 import sys, pygame, random
+from Scripts.GameObject import *
 
-class Ball:
+class Ball(GameObject):
 
 
-    def __init__(self, screen, gameManager):
+    def __init__(self, gameManager):
         self.color = (random.randint(200,255), random.randint(200,255), 150)
-        self.screen = screen
+        self.screen = self.gameManager.screen
 
         self.gameManager = gameManager
 
-        self.ballRect = pygame.Rect(int(screen.get_width() / 2), random.randint(20, screen.get_height() - 20), 20, 20)
+        self.ballRect = pygame.Rect(int(self.gameManager.screen.get_width() / 2), random.randint(20, self.gameManager.screen.get_height() - 20), 20, 20)
         self.ballTravelX = 1  # amount the ball travels on the x axis. increases with each hit
         self.ballTravelY = 0#random.randint(-100, 100) / 100  # 1 = greatest curve, 0 = straight
         self.ballSpeed = 10
 
     def draw(self):
         # draw ball
-        pygame.draw.rect(self.screen, self.color, self.ballRect)
+        pygame.draw.rect(self.gameManager.screen, self.color, self.ballRect)
 
     def move(self):
         # ball boundaries check, bounce around walls

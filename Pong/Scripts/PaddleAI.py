@@ -1,11 +1,11 @@
 import sys, pygame, random
+from Scripts.GameObject import *
 
-class PaddleAI:
+class PaddleAI(GameObject):
 
-    def __init__(self, screen, gameManager):
-        self.screen = screen
+    def __init__(self, gameManager):
         self.gameManager = gameManager
-        self.paddleRect = pygame.Rect(self.screen.get_width() - 50, 0, 50, 200)
+        self.paddleRect = pygame.Rect(self.gameManager.screen.get_width() - 50, 0, 50, 200)
         self.paddleSpeed = 7
         self.offset = 0
 
@@ -23,12 +23,12 @@ class PaddleAI:
         # paddle boundaries check
         if self.paddleRect.y < 0:
             self.paddleRect.y = 0
-        elif self.paddleRect.y > self.screen.get_height() - self.paddleRect.height:
-            self.paddleRect.y = self.screen.get_height() - self.paddleRect.height
+        elif self.paddleRect.y > self.gameManager.screen.get_height() - self.paddleRect.height:
+            self.paddleRect.y = self.gameManager.screen.get_height() - self.paddleRect.height
 
     def draw(self):
         # draw paddle
-        pygame.draw.rect(self.screen, (0,0,0), self.paddleRect)
+        pygame.draw.rect(self.gameManager.screen, (0,0,0), self.paddleRect)
 
     def new_offset(self):
         if self.paddleRect.colliderect(self.gameManager.ball.ballRect):

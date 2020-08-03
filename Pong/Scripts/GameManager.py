@@ -10,26 +10,46 @@ class GameManager:
         self.ball = None
         self.paddlePlayer = None
         self.paddleAI = None
+
         self.screen = screen
+        self.clock = None
 
-    def set_ball(self, ball):
-        self.ball = ball
+        self.gameObjects = []
 
-    def set_player_paddle(self, paddlePlayer):
-        self.paddlePlayer = paddlePlayer
-
-    def set_ai_paddle(self, paddleAI):
-        self.paddleAI = paddleAI
+    def setup_pygame(self):
+        self.screen = pygame.display.set_mode((1500, 1000))  # screen is a Surface object
+        self.clock = pygame.time.Clock()
 
     def spawn_game_objects(self):
         # create player paddle
-        paddlePlayer = PaddlePlayer(self.screen)
-        gameManager.set_player_paddle(paddlePlayer)
+        self.paddlePlayer = PaddlePlayer(self.screen)
+        self.gameObjects.append(self.paddlePlayer)
 
         # create ai paddle
-        paddleAI = PaddleAI(self.screen, gameManager)
-        gameManager.set_ai_paddle(paddleAI)
+        self.paddleAI = PaddleAI(self.screen, self)
+        self.gameObjects.append(self.paddleAI)
 
         # create ball object
-        ball = Ball(self.screen, gameManager)
-        gameManager.set_ball(ball)
+        self.ball = Ball(self.screen, self)
+        self.gameObjects.append(self.ball)
+
+    def update_game_objects(self):
+        for gameObject in self.gameObjects:
+            gameObject.update()
+
+    def check_input(self):
+        # Input
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_p]:
+            print("p was pressed!")
+
+    def update_screen(self):
+        # Update screen
+        self.clock.tick(120)
+        pygame.display.flip()
+        self.screen.fill((100, 100, 255))
+
+    def update(self):
+        self.check_input()
+        self.update_game_objects()
+

@@ -1,9 +1,9 @@
 import sys, pygame
+from Scripts.GameObject import *
 
-class PaddlePlayer:
+class PaddlePlayer(GameObject):
 
-    def __init__(self, screen):
-        self.screen = screen
+    def __init__(self):
         self.paddleRect = pygame.Rect(0, 0, 50, 200)
 
     def input(self):
@@ -22,14 +22,14 @@ class PaddlePlayer:
         # paddle boundaries check
         if self.paddleRect.y < 0:
             self.paddleRect.y = 0
-        elif self.paddleRect.y > self.screen.get_height() - self.paddleRect.height:
-            self.paddleRect.y = self.screen.get_height() - self.paddleRect.height
+        elif self.paddleRect.y > self.gameManager.screen.get_height() - self.paddleRect.height:
+            self.paddleRect.y = self.gameManager.screen.get_height() - self.paddleRect.height
 
 
 
     def draw(self):
         # draw paddle
-        pygame.draw.rect(self.screen, (0,0,0), self.paddleRect)
+        pygame.draw.rect(self.gameManager.screen, (0,0,0), self.paddleRect)
 
     def update(self):
         self.input()
