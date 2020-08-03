@@ -3,15 +3,15 @@ import sys, pygame, random
 class Ball:
 
 
-    def __init__(self, screen, gameObjects):
+    def __init__(self, screen, gameManager):
         self.color = (random.randint(200,255), random.randint(200,255), 150)
         self.screen = screen
 
-        self.gameObjects = gameObjects
+        self.gameManager = gameManager
 
         self.ballRect = pygame.Rect(int(screen.get_width() / 2), random.randint(20, screen.get_height() - 20), 20, 20)
         self.ballTravelX = 1  # amount the ball travels on the x axis. increases with each hit
-        self.ballTravelY = random.randint(-100, 100) / 100  # 1 = greatest curve, 0 = straight
+        self.ballTravelY = 0#random.randint(-100, 100) / 100  # 1 = greatest curve, 0 = straight
         self.ballSpeed = 10
 
     def draw(self):
@@ -34,32 +34,32 @@ class Ball:
         self.ballRect.y += int(self.ballTravelY * self.ballSpeed)
 
     def check_paddle_collision_player(self):
-        if self.gameObjects.paddlePlayer is None:
+        if self.gameManager.paddlePlayer is None:
             return
 
         # check paddle ball collision
-        if self.gameObjects.paddlePlayer.paddleRect.colliderect(self.ballRect) and self.ballTravelX < 0:
+        if self.gameManager.paddlePlayer.paddleRect.colliderect(self.ballRect):# and self.ballTravelX < 0:
             # get new y direction of ball
             self.ballTravelX = -self.ballTravelX
-            self.ballTravelY = (self.ballRect.centery - self.gameObjects.paddlePlayer.paddleRect.centery) / 100  # new y travel
+            self.ballTravelY = (self.ballRect.centery - self.gameManager.paddlePlayer.paddleRect.centery) / 99  # new y travel
             self.ballTravelX += 0.1  # new x travel
             if self.ballTravelX > 2.5:
                 self.ballTravelX = 2.5
-            print("Collision!")
+
 
     def check_paddle_collision_ai(self):
-        if self.gameObjects.paddleAI is None:
+        if self.gameManager.paddleAI is None:
             return
 
         # check paddle ball collision
-        if self.gameObjects.paddleAI.paddleRect.colliderect(self.ballRect) and self.ballTravelX > 0:
+        if self.gameManager.paddleAI.paddleRect.colliderect(self.ballRect):# and self.ballTravelX > 0:
             # get new y direction of ball
             self.ballTravelX = -self.ballTravelX
-            self.ballTravelY = (self.ballRect.centery - self.gameObjects.paddleAI.paddleRect.centery) / 100  # new y travel
+            self.ballTravelY = (self.ballRect.centery - self.gameManager.paddleAI.paddleRect.centery) / 99  # new y travel
             self.ballTravelX -= 0.1  # new x travel
             if self.ballTravelX > 2.5:
                 self.ballTravelX = 2.5
-            print("Collision!")
+
 
     def update(self):
         self.check_paddle_collision_player()

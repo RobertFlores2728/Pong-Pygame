@@ -3,7 +3,7 @@ import sys, pygame
 from Scripts.Ball import *
 from Scripts.PaddlePlayer import *
 from Scripts.PaddleAI import *
-from Scripts.GameObjects import *
+from Scripts.GameManager import *
 
 
 pygame.init()
@@ -15,21 +15,21 @@ def main():
     screen = pygame.display.set_mode((1500, 1000))  # screen is a Surface object
     clock = pygame.time.Clock()
 
-    gameObjects = GameObjects()
+    gameManager = GameManager(screen)
 
     # create player paddle
     paddlePlayer = PaddlePlayer(screen)
-    gameObjects.set_player_paddle(paddlePlayer)
+    gameManager.set_player_paddle(paddlePlayer)
 
 
     # create ai paddle
-    paddleAI = PaddleAI(screen, gameObjects)
-    gameObjects.set_ai_paddle(paddleAI)
+    paddleAI = PaddleAI(screen, gameManager)
+    gameManager.set_ai_paddle(paddleAI)
 
 
     # create ball object
-    ball = Ball(screen, gameObjects)
-    gameObjects.set_ball(ball)
+    ball = Ball(screen, gameManager)
+    gameManager.set_ball(ball)
 
 
 
