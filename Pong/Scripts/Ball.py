@@ -1,4 +1,4 @@
-import sys, pygame, random, time
+import sys, pygame, random, time, threading
 from Scripts.GameObject import *
 
 class Ball(GameObject):
@@ -14,7 +14,7 @@ class Ball(GameObject):
         self.ballTravelY = 0#random.randint(-100, 100) / 100  # 1 = greatest curve, 0 = straight
         self.ballSpeed = 10
 
-        self.respawnTime = time.time()
+
 
     def draw(self):
         # draw ball
@@ -64,7 +64,8 @@ class Ball(GameObject):
 
         if self.ballRect.x > self.gameManager.screen.get_width() or self.ballRect.x < 0 - self.ballRect.width:
             self.gameManager.intermission = True
-            self.respawnTime = time.time() + 1
+            timer1 = threading.Timer(1.0, self.reset_ball)
+            timer1.start()
 
         if self.ballRect.x > self.gameManager.screen.get_width():
             self.gameManager.playerScore += 1
@@ -88,3 +89,6 @@ class Ball(GameObject):
         self.check_paddle_collision_ai()
         self.move()
         self.draw()
+
+    def test(self):
+        print("RUNS!")

@@ -82,8 +82,6 @@ class GameManager:
         if self.paused:
             self.draw_menu()
 
-        if self.intermission and time.time() >= self.ball.respawnTime:
-            self.ball.reset_ball()
 
         self.update_screen()
         self.update_score_text()
