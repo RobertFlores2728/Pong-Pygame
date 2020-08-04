@@ -59,11 +59,11 @@ class Ball(GameObject):
                 self.ballTravelX = 2.5
 
     def check_if_scored(self):
-        if self.gameManager.intermission:
+        if self.gameManager.hasScored:
             return
 
         if self.ballRect.x > self.gameManager.screen.get_width() or self.ballRect.x < 0 - self.ballRect.width:
-            self.gameManager.intermission = True
+            self.gameManager.hasScored = True
             timer1 = threading.Timer(1.0, self.reset_ball)
             timer1.start()
 
@@ -80,7 +80,7 @@ class Ball(GameObject):
         self.ballTravelX = 1  # amount the ball travels on the x axis. increases with each hit
         self.ballTravelY = 0  # random.randint(-100, 100) / 100  # 1 = greatest curve, 0 = straight
         self.gameManager.paddleAI.new_offset()
-        self.gameManager.intermission = False
+        self.gameManager.hasScored = False
 
 
     def update(self):
@@ -88,7 +88,6 @@ class Ball(GameObject):
         self.check_paddle_collision_player()
         self.check_paddle_collision_ai()
         self.move()
-        self.draw()
 
     def test(self):
         print("RUNS!")

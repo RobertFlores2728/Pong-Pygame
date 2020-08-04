@@ -8,14 +8,6 @@ class PaddlePlayer(GameObject):
         self.gameManager = gameManager
 
     def input(self):
-        keys = pygame.key.get_pressed()
-
-        """ Move paddle
-        if keys[pygame.K_w]:
-            self.paddleRect.y -= self.paddleSpeed
-        if keys[pygame.K_s]:
-            self.paddleRect.y += self.paddleSpeed
-        """
 
         mousePositionY = pygame.mouse.get_pos()[1]
         self.paddleRect.y = mousePositionY
@@ -34,4 +26,3 @@ class PaddlePlayer(GameObject):
 
     def update(self):
         self.input()
-        self.draw()

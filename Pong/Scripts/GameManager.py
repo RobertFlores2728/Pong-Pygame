@@ -3,6 +3,7 @@ import sys, pygame, time
 from Scripts.Ball import *
 from Scripts.PaddlePlayer import *
 from Scripts.PaddleAI import *
+from Scripts.Button import *
 
 class GameManager:
 
@@ -11,7 +12,7 @@ class GameManager:
         self.AIScore = 0
 
         self.paused = False
-        self.intermission = False
+        self.hasScored = False
 
         self.ball = None
         self.paddlePlayer = None
@@ -21,10 +22,23 @@ class GameManager:
         self.clock = None
 
         self.gameObjects = []
+        self.uiObjects = []
 
     def setup_pygame(self):
         self.screen = pygame.display.set_mode((1500, 1000))  # screen is a Surface object
         self.clock = pygame.time.Clock()
+
+    def setup_ui(self):
+        button = Button(self)
+        self.uiObjects.append(button)
+
+    def update_ui(self):
+        for uiObject in self.uiObjects:
+            uiObject.update()
+
+    def draw_ui(self):
+        for uiObject in self.uiObjects:
+            uiObject.draw()
 
 
     def spawn_game_objects(self):
@@ -55,6 +69,10 @@ class GameManager:
                     self.paused = not (self.paused)
                     print(self.paused)
 
+    def draw_game_objects(self):
+        for gameObject in self.gameObjects:
+            gameObject.draw()
+
 
 
 
@@ -68,28 +86,31 @@ class GameManager:
         font = pygame.font.SysFont('Comic Sans MS', 30)
         score = str(self.playerScore) + " - " + str(self.AIScore)
         textSurface = font.render(score, True, (255, 255, 255))
+        textRect = textSurface.get_rect()
+        textRect.centerx = int(self.screen.get_width() / 2)
 
-        self.screen.blit(textSurface, textSurface.get_rect())
+        self.screen.blit(textSurface, textRect)
 
 
     def start(self):
         self.setup_pygame()
+        self.setup_ui()
         self.spawn_game_objects()
 
     def update(self):
         if not(self.paused):
             self.update_game_objects()
         if self.paused:
-            self.draw_menu()
+            self.update_ui()
+            self.draw_ui()
 
-
+        self.draw_game_objects()
         self.update_screen()
         self.update_score_text()
 
         self.check_input()
 
-    def draw_menu(self):
-        print("drawing menu...")
+
 
 
 
