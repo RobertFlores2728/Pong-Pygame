@@ -1,4 +1,4 @@
-import sys, pygame
+import sys, pygame, time
 
 from Scripts.Ball import *
 from Scripts.PaddlePlayer import *
@@ -81,6 +81,10 @@ class GameManager:
             self.update_game_objects()
         if self.paused:
             self.draw_menu()
+
+        if self.intermission and time.time() >= self.ball.respawnTime:
+            self.ball.reset_ball()
+
         self.update_screen()
         self.update_score_text()
 
@@ -88,4 +92,9 @@ class GameManager:
 
     def draw_menu(self):
         print("drawing menu...")
+
+
+
+
+
 

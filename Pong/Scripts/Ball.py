@@ -1,4 +1,4 @@
-import sys, pygame, random
+import sys, pygame, random, time
 from Scripts.GameObject import *
 
 class Ball(GameObject):
@@ -13,6 +13,8 @@ class Ball(GameObject):
         self.ballTravelX = 1  # amount the ball travels on the x axis. increases with each hit
         self.ballTravelY = 0#random.randint(-100, 100) / 100  # 1 = greatest curve, 0 = straight
         self.ballSpeed = 10
+
+        self.respawnTime = time.time()
 
     def draw(self):
         # draw ball
@@ -60,16 +62,15 @@ class Ball(GameObject):
         if self.gameManager.intermission:
             return
 
+        if self.ballRect.x > self.gameManager.screen.get_width() or self.ballRect.x < 0 - self.ballRect.width:
+            self.gameManager.intermission = True
+            self.respawnTime = time.time() + 1
+
         if self.ballRect.x > self.gameManager.screen.get_width():
-            print("player scored")
             self.gameManager.playerScore += 1
-            # self.gameManager.intermission = True
-            self.reset_ball()
         if self.ballRect.x < 0 - self.ballRect.width:
-            print("ai scored")
             self.gameManager.AIScore += 1
-            # self.gameManager.intermission = True
-            self.reset_ball()
+
 
 
     def reset_ball(self):
@@ -78,6 +79,7 @@ class Ball(GameObject):
         self.ballTravelX = 1  # amount the ball travels on the x axis. increases with each hit
         self.ballTravelY = 0  # random.randint(-100, 100) / 100  # 1 = greatest curve, 0 = straight
         self.gameManager.paddleAI.new_offset()
+        self.gameManager.intermission = False
 
 
     def update(self):
