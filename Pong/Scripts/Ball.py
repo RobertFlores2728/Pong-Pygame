@@ -5,7 +5,7 @@ class Ball(GameObject):
 
 
     def __init__(self, gameManager):
-        self.color = (random.randint(200,255), random.randint(200,255), 150)
+        self.color = (random.randint(240,255), random.randint(240,255), random.randint(240,255))
 
         self.gameManager = gameManager
 
@@ -18,7 +18,12 @@ class Ball(GameObject):
 
     def draw(self):
         # draw ball
-        pygame.draw.rect(self.gameManager.screen, self.color, self.ballRect)
+        ballSurface = pygame.Surface((20, 20))
+        ballSurface.fill((0, 0, 0))
+        ballSurface.set_colorkey((0, 0, 0))
+        pygame.draw.circle(ballSurface, self.color, (int(ballSurface.get_width()/2), int(ballSurface.get_height()/2)), 10)
+        self.gameManager.screen.blit(ballSurface, self.ballRect)
+
 
     def move(self):
         # ball boundaries check, bounce around walls
