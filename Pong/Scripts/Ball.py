@@ -10,7 +10,7 @@ class Ball(GameObject):
         self.gameManager = gameManager
 
         self.ballRect = pygame.Rect(int(self.gameManager.screen.get_width() / 2), random.randint(20, self.gameManager.screen.get_height() - 20), 20, 20)
-        self.ballTravelX = 1  # amount the ball travels on the x axis. increases with each hit
+        self.ballTravelX = random.choice([-1, 1])  # amount the ball travels on the x axis. increases with each hit
         self.ballTravelY = 0#random.randint(-100, 100) / 100  # 1 = greatest curve, 0 = straight
         self.ballSpeed = 10
 
@@ -69,15 +69,20 @@ class Ball(GameObject):
 
         if self.ballRect.x > self.gameManager.screen.get_width():
             self.gameManager.playerScore += 1
+            self.lastPlayerScored = "p"
         if self.ballRect.x < 0 - self.ballRect.width:
             self.gameManager.AIScore += 1
+            self.lastPlayerScored = "ai"
 
 
 
     def reset_ball(self):
         self.ballRect = pygame.Rect(int(self.gameManager.screen.get_width() / 2),
                                     random.randint(20, self.gameManager.screen.get_height() - 20), 20, 20)
-        self.ballTravelX = 1  # amount the ball travels on the x axis. increases with each hit
+        if self.lastPlayerScored == "p":
+            self.ballTravelX = -1  # amount the ball travels on the x axis. increases with each hit
+        elif self.lastPlayerScored == "ai":
+            self.ballTravelX = 1  # amount the ball travels on the x axis. increases with each hit
         self.ballTravelY = 0  # random.randint(-100, 100) / 100  # 1 = greatest curve, 0 = straight
         self.gameManager.paddleAI.new_offset()
         self.gameManager.hasScored = False

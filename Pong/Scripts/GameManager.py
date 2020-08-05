@@ -24,13 +24,24 @@ class GameManager:
         self.gameObjects = []
         self.uiObjects = []
 
+    def pause_game(self):
+        self.paused = not self.paused
+
+    def quit_game(self):
+        pygame.quit()
+        sys.exit()
+
+
     def setup_pygame(self):
         self.screen = pygame.display.set_mode((1500, 1000))  # screen is a Surface object
         self.clock = pygame.time.Clock()
 
     def setup_ui(self):
-        button = Button(self)
-        self.uiObjects.append(button)
+        resumeButton = Button(self, "Resume", int(self.screen.get_height() / 2 - 100), self.pause_game)
+        self.uiObjects.append(resumeButton)
+
+        quitButton = Button(self, "Quit", int(self.screen.get_height() / 2), self.quit_game)
+        self.uiObjects.append(quitButton)
 
     def update_ui(self):
         for uiObject in self.uiObjects:
@@ -61,13 +72,10 @@ class GameManager:
     def check_input(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
+                self.quit_game()
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_p:
-                    print("p was pressed!")
-                    self.paused = not (self.paused)
-                    print(self.paused)
+                    self.pause_game()
 
     def draw_game_objects(self):
         for gameObject in self.gameObjects:

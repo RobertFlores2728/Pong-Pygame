@@ -1,19 +1,23 @@
 import pygame,time
 
 class Button:
-    def __init__(self, gameManager):
+    def __init__(self, gameManager, text, yPos, func):
+        self.text = text
+
         self.gameManager = gameManager
-        self.buttonSurface = pygame.Surface((100, 100))
-        self.buttonSurface.fill((200, 255, 0))
+        self.buttonSurface = pygame.Surface((150, 50))
+        self.buttonSurface.fill((69, 16, 176))
         self.buttonRect = self.buttonSurface.get_rect()
         self.buttonRect.centerx = int(self.gameManager.screen.get_width() / 2)
-        self.buttonRect.centery = int(self.gameManager.screen.get_height() / 2)
+        self.buttonRect.centery = yPos
         self.gameManager.screen.blit(self.buttonSurface, self.buttonRect)
 
         self.mouseHovering = False
 
         self.clickCooldown = 0.5
         self.futureTime = time.time() + self.clickCooldown
+
+        self.func = func
 
     def update(self):
         self.check_mouse_hovering()
@@ -22,10 +26,9 @@ class Button:
     def draw(self):
         # text
         font = pygame.font.SysFont('Comic Sans MS', 30)
-        text = "Resume"
-        textSurface = font.render(text, True, (255, 255, 255))
+        textSurface = font.render(self.text, True, (255, 255, 255))
         textRect = textSurface.get_rect()
-        textRect.centerx = int(self.gameManager.screen.get_width() / 2)
+        textRect.centerx = int(self.buttonSurface.get_width() / 2)
 
         self.buttonSurface.blit(textSurface, textRect)
 
@@ -43,6 +46,6 @@ class Button:
     def input(self):
         if(pygame.mouse.get_pressed()[0] == 1 and self.mouseHovering and self.futureTime < time.time()):
             print("button clicked!")
-            self.gameManager.paused = False
+            self.func()
             self.futureTime = time.time() + self.clickCooldown
 
